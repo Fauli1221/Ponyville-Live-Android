@@ -1,114 +1,50 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.0'
-        classpath 'me.tatarka:gradle-retrolambda:2.5.0'
-    }
-}
-
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
-
-apply from: 'local.gradle'
-
-// Manifest version information!
-def versionMajor = 1
-def versionMinor = 0
-def versionPatch = 0
-def versionBuild = 0 // bump for dogfood builds, public betas, etc.
-
-def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
-def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
-
-def isTravis = "true".equals(System.getenv("TRAVIS"))
-def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
-
-def packageName = 'com.ponyvillelive.pvlmobile'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion '22.0.1'
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId packageName
-        minSdkVersion 15
+        applicationId "com.ponyvillelive.pvlmobile"
+        minSdkVersion 13
         targetSdkVersion 22
-
-        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
-        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
-
-        buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
-        buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
-        buildConfigField "String", "PACKAGE_NAME", "\"${packageName}\""
+        versionCode 300
+        versionName "3.0.0"
+        multiDexEnabled true
     }
-
-    lintOptions {
-        abortOnError false
-    }
-
     buildTypes {
         release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources true
+        }
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-
-        debug {
-            applicationIdSuffix '.dev'
-            versionNameSuffix '-dev'
+            shrinkResources true
         }
     }
-
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    dexOptions {
-        // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
-        preDexLibraries = preDexEnabled && !isTravis
-    }
-}
-
-repositories {
-    mavenCentral()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-
-    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
-
-    compile 'com.jakewharton.timber:timber:2.5.0'
-    compile 'com.jakewharton:butterknife:6.0.0'
-
-    compile 'com.squareup.okhttp:okhttp:2.1.0'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
-    compile 'com.squareup.retrofit:retrofit:1.8.0'
-    compile 'com.squareup.picasso:picasso:2.4.0'
-    compile 'com.squareup.dagger:dagger:1.2.2'
-
-    compile 'io.reactivex:rxjava:1.0.2'
-    compile 'io.reactivex:rxandroid:0.23.0'
-
-    compile 'com.google.android.gms:play-services-cast:7.0.0'
-    compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
-    compile 'com.sothree.slidinguppanel:library:2.0.4'
-    compile 'org.lucasr.twowayview:core:1.0.0-SNAPSHOT@aar'
-    compile 'org.lucasr.twowayview:layouts:1.0.0-SNAPSHOT@aar'
-    compile 'com.melnykov:floatingactionbutton:1.1.0'
-
-    compile 'com.android.support:mediarouter-v7:22.1.0'
-    compile 'com.android.support:support-v4:22.1.0'
-    compile 'com.android.support:appcompat-v7:22.1.0'
-    compile 'com.android.support:palette-v7:22.1.0'
-    compile 'com.android.support:recyclerview-v7:22.1.0'
-    compile 'com.android.support:cardview-v7:22.1.0'
-
-    debugCompile 'com.jakewharton.madge:madge:1.1.1'
-    debugCompile 'com.jakewharton.scalpel:scalpel:1.1.2'
-    debugCompile 'com.squareup.retrofit:retrofit-mock:1.8.0'
+    compile 'com.google.code.gson:gson:2.5'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:support-v4:23.1.1'
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'io.reactivex:rxjava:1.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
+    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta3'
+    compile 'com.android.support:cardview-v7:23.1.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.android.support:palette-v7:23.1.1'
+    compile 'com.squareup.okhttp3:okhttp:3.0.1'
+    compile 'com.android.support:mediarouter-v7:23.1.1'
+    compile 'com.sothree.slidinguppanel:library:3.2.1'
+    compile 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
+    compile 'com.nhaarman.listviewanimations:lib-manipulation:3.1.0@aar'
+    compile 'com.nhaarman.listviewanimations:lib-core-slh:3.1.0@aar'
 }

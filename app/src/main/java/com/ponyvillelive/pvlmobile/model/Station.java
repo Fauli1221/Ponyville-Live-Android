@@ -1,33 +1,39 @@
 package com.ponyvillelive.pvlmobile.model;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Radio station entity as presented by the API
- */
-public class Station extends Entity implements Parcelable {
+import java.util.ArrayList;
+import java.util.List;
 
-    public static final String STATION_TYPE_AUDIO = "audio";
-    public static final String STATION_TYPE_VIDEO = "video";
+/**
+ * Radio station entity as presented by the PonyvilleAPI
+ */
+public class Station extends Entity {
 
     public String name;
     public String shortcode;
     public String genre;
     public String category;
-    public String type;
+    public String affiliation;
     @SerializedName("image_url")
     public String imageUrl;
     @SerializedName("web_url")
     public String webUrl;
-    @SerializedName("stream_url")
-    public String streamUrl;
     @SerializedName("twitter_url")
     public String twitterUrl;
     public String irc;
-
+    public int sort_order;
+    @SerializedName("player_url")
+    public String playerUrl;
+    @SerializedName("request_url")
+    public String requestUrl;
+    @SerializedName("stream_url")
+    public String streamUrl;
+    @SerializedName("default_stream_id")
+    public String defaultStreamId;
+    public List<Stream> streams;
 
     @Override
     public int describeContents() {
@@ -36,37 +42,47 @@ public class Station extends Entity implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.name);
-        dest.writeString(this.shortcode);
-        dest.writeString(this.genre);
-        dest.writeString(this.category);
-        dest.writeString(this.type);
-        dest.writeString(this.imageUrl);
-        dest.writeString(this.webUrl);
-        dest.writeString(this.streamUrl);
-        dest.writeString(this.twitterUrl);
-        dest.writeString(this.irc);
-        dest.writeInt(this.id);
+        dest.writeString(name);
+        dest.writeString(shortcode);
+        dest.writeString(genre);
+        dest.writeString(category);
+        dest.writeString(affiliation);
+        dest.writeString(imageUrl);
+        dest.writeString(webUrl);
+        dest.writeString(twitterUrl);
+        dest.writeString(irc);
+        dest.writeInt(sort_order);
+        dest.writeString(playerUrl);
+        dest.writeString(requestUrl);
+        dest.writeString(streamUrl);
+        dest.writeString(defaultStreamId);
+        dest.writeList(streams);
     }
 
     public Station() {
     }
 
     private Station(Parcel in) {
+        this.id = in.readString();
         this.name = in.readString();
         this.shortcode = in.readString();
         this.genre = in.readString();
         this.category = in.readString();
-        this.type = in.readString();
+        this.affiliation = in.readString();
         this.imageUrl = in.readString();
         this.webUrl = in.readString();
-        this.streamUrl = in.readString();
         this.twitterUrl = in.readString();
         this.irc = in.readString();
-        this.id = in.readInt();
+        this.sort_order = in.readInt();
+        this.playerUrl = in.readString();
+        this.requestUrl = in.readString();
+        this.streamUrl = in.readString();
+        this.defaultStreamId = in.readString();
+        this.streams = new ArrayList<Stream>();
+        in.readList(streams, null);
     }
 
-    public static final Parcelable.Creator<Station> CREATOR = new Parcelable.Creator<Station>() {
+    public static final Creator<Station> CREATOR = new Creator<Station>() {
         public Station createFromParcel(Parcel source) {
             return new Station(source);
         }

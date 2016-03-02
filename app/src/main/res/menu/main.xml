@@ -1,24 +1,23 @@
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.ponyvillelive.pvlmobile.ui.MainActivity">
-
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_cast"
-        android:title="@string/action_cast"
+        android:id="@+id/media_route_menu_item"
+        android:title="@string/media_route_menu_title"
         app:actionProviderClass="android.support.v7.app.MediaRouteActionProvider"
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_toggle"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never"/>
+        sothree:showAsAction="never"
+        android:title="@string/action_hide"/>
+
     <item
-        android:id="@+id/action_tester"
-        android:checkable="true"
-        android:orderInCategory="99"
-        android:title="FUCKIN YEAH"
-        app:showAsAction="never"/>
+        android:id="@+id/action_anchor"
+        android:orderInCategory="200"
+        sothree:showAsAction="never"
+        android:title="@string/action_anchor_enable"/>
+
 </menu>

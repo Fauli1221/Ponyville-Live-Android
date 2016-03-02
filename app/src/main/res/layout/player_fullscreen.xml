@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <!-- Some content for visual interest in the case where no presentation is showing. -->
+    <FrameLayout android:id="@+id/player"
+        android:background="#ff000000"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible" >
+
+        <SurfaceView android:id="@+id/surface_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            android:layout_gravity="top"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text=""
+                />
+
+            <ImageButton android:id="@+id/stop_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:background="@null"
+                android:src="@drawable/ic_media_stop" />
+        </LinearLayout>
+
+
+        <!-- Control buttons for the currently selected route. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            >
+
+            <ImageButton android:id="@+id/prev_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:background="@null"
+                android:src="@android:drawable/ic_media_rew" />
+
+            <ImageButton android:id="@+id/pause_resume_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:background="@null"
+                android:src="@drawable/ic_media_pause" />
+            <ImageButton android:id="@+id/next_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:background="@null"
+                android:src="@android:drawable/ic_media_ff" />
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal">
+            <SeekBar android:id="@+id/seekbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:max="100"
+                android:progress="0"
+                android:layout_gravity="center"
+                />
+            <ImageButton android:id="@+id/extra_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:background="@null"
+                android:src="@drawable/ic_fullscreen_exit" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+</FrameLayout>

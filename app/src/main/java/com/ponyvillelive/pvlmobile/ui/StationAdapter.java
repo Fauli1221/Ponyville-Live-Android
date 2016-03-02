@@ -1,159 +1,69 @@
 package com.ponyvillelive.pvlmobile.ui;
 
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.support.v7.graphics.Palette;
-import android.support.v7.widget.CardView;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.ponyvillelive.pvlmobile.PvlApp;
 import com.ponyvillelive.pvlmobile.R;
 import com.ponyvillelive.pvlmobile.model.Station;
-import com.ponyvillelive.pvlmobile.net.API;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
-import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+public class StationAdapter extends RecyclerView.Adapter<StationHolder> {
 
-/**
- * An implementation of {@link android.widget.BaseAdapter}
- * for {@link com.ponyvillelive.pvlmobile.model.Station}s
- */
-public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHolder> {
 
-    @Inject
-    Picasso picasso;
-    @Inject
-    API     api;
+    private final Context mContext;
+    private List<Station> stationList;
 
-    private LayoutInflater inflater;
-    private Station[]      stations;
-    private Subscription   apiSub;
-    private Resources      res;
+    public StationAdapter(Context context) {
+        this.mContext = context;
+        this.stationList = new ArrayList<>();
+    }
 
-    public StationAdapter(LayoutInflater inflater, String type) {
-        this.inflater = inflater;
-        this.stations = new Station[0];
-        this.res = inflater.getContext().getResources();
-        PvlApp.get(inflater.getContext()).inject(this);
-        apiSub = api
-                .getStationList(type)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(stationResponse -> {
-                    this.stations = stationResponse.result;
-                    notifyDataSetChanged();
-                    apiSub.unsubscribe();
-                });
+    public void setItems(Station[] stations){
+        this.stationList = Arrays.asList(stations);
+    }
+
+    public Station[] getItems(){
+        return stationList.toArray(new Station[stationList.size()]);
+    }
+
+    public Station getItem(int position){
+        return stationList.get(position);
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                               .inflate(R.layout.view_station_list_item, parent, false);
+    public void onBindViewHolder(StationHolder holder, int position) {
+        Station station = stationList.get(position);
 
-        return new ViewHolder(v);
+        holder.title.setText(station.name);
+        holder.subtitle.setText(station.genre);
+        holder.listeners.setText("44");
+        holder.songTitle.setText("Join The Herd");
+        holder.songArtist.setText("Forest Rain");
+
+        Picasso.with(mContext).load(station.imageUrl)
+                .placeholder(R.drawable.pvl_logo)
+                .into(holder.target);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Station station = stations[position];
+    public StationHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        View itemView = LayoutInflater.
+                from(viewGroup.getContext()).
+                inflate(R.layout.view_station_list_item, viewGroup, false);
 
-        holder.name.setText(station.name);
-        holder.genre.setText(station.genre);
-        picasso
-                .load(station.imageUrl)
-                .placeholder(R.drawable.ic_launcher)
-                .into(holder);
+        return new StationHolder(itemView);
     }
 
     @Override
     public int getItemCount() {
-        if(stations == null) return 0;
-        return stations.length;
+        return stationList.size();
     }
 
-    public Station getItem(int position) {
-        return stations[position];
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder implements Target {
-
-        @InjectView(R.id.station_icon)
-        ImageView   icon;
-        @InjectView(R.id.station_name)
-        TextView    name;
-        @InjectView(R.id.station_genre)
-        TextView    genre;
-        @InjectView(R.id.station_menu)
-        ImageButton menuButton;
-
-        CardView baseView;
-        Palette  colourPalette;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            baseView = (CardView) itemView;
-
-            ButterKnife.inject(this, baseView);
-        }
-
-        @OnClick(R.id.station_menu)
-        public void menuClicked(View v) {
-            PopupMenu popupMenu = new PopupMenu(StationAdapter.this.inflater.getContext(), v);
-            MenuInflater menuInflater = popupMenu.getMenuInflater();
-            menuInflater.inflate(R.menu.view_station, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(item -> {
-                if (item.getItemId() == R.id.action_change_stream) {
-                    // TODO: Switch streams here
-                    Toast.makeText(inflater.getContext(), "Change streams pressed", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                return false;
-            });
-            popupMenu.show();
-        }
-
-        @Override
-        public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-            colourPalette = Palette.from(bitmap).generate();
-            baseView.post(() -> {
-                icon.setImageBitmap(bitmap);
-                colourise();
-            });
-        }
-
-        public void colourise() {
-           name.setTextColor(colourPalette.getVibrantColor(Color.BLACK));
-           genre.setTextColor(colourPalette.getMutedColor(Color.DKGRAY));
-        }
-
-        @Override
-        public void onBitmapFailed(Drawable errorDrawable) {
-            // noop
-        }
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-            icon.post(() -> icon.setImageDrawable(placeHolderDrawable));
-        }
-    }
 }

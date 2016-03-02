@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="media_names">
+        <item>Big Buck Bunny</item>
+        <item>PonyvilleFM</item>
+        <item>Best Pony Radio</item>
+        <item>ARBrony Radio</item>
+    </string-array>
+    <string-array name="media_uris">
+        <item>http://archive.org/download/BigBuckBunny_328/BigBuckBunny_512kb.mp4</item>
+        <item>http://192.99.131.205:8000/stream.mp3</item>
+        <item>http://s5radio.ponyvillelive.com:8008/stream?;stream.nsv</item>
+        <item>http://arbr.arbronyradio.com:8018/stream.mp3</item>
+    </string-array>
+</resources>
