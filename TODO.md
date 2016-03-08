@@ -3,6 +3,9 @@ Things yet to be done in this application
 
 ADD USER ACTIONABLE ERROR MESSAGES FOR API HANDLING!
 
+You foal tinker -> placeholder not working in adapters because holder target is used!
+  Set placeholder manually on holder create/recycle, wait to target to finish
+
 To add to action menu:
   Sort (contextually)
     Save selection to user settings, restore on return
