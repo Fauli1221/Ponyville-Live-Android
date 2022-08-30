@@ -2,7 +2,7 @@ package com.ponyvillelive.pvlmobile.media.players;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.v7.media.MediaRouter;
+import androidx.mediarouter.media.MediaRouter;
 import android.view.Gravity;
 import android.view.Surface;
 import android.view.SurfaceHolder;

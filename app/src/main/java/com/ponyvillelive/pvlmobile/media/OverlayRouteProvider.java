@@ -14,11 +14,11 @@ import android.media.AudioManager;
 import android.media.MediaRouter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.media.MediaControlIntent;
-import android.support.v7.media.MediaRouteDescriptor;
-import android.support.v7.media.MediaRouteProviderDescriptor;
-import android.support.v7.media.MediaRouter.ControlRequestCallback;
-import android.support.v7.media.MediaSessionStatus;
+import androidx.mediarouter.media.MediaControlIntent;
+import androidx.mediarouter.media.MediaRouteDescriptor;
+import androidx.mediarouter.media.MediaRouteProviderDescriptor;
+import androidx.mediarouter.media.MediaRouter.ControlRequestCallback;
+import androidx.mediarouter.media.MediaSessionStatus;
 import android.util.Log;
 
 import com.ponyvillelive.pvlmobile.R;
@@ -26,7 +26,7 @@ import com.ponyvillelive.pvlmobile.model.player.PlaylistItem;
 
 import java.util.ArrayList;
 
-public final class OverlayRouteProvider extends android.support.v7.media.MediaRouteProvider {
+public final class OverlayRouteProvider extends androidx.mediarouter.media.MediaRouteProvider {
     private static final String TAG = "PVLRouteProvider";
     private static final String LOCAL_OVERLAY_ROUTE = "local_overlay";
     private static final int VOLUME_MAX = 10;
@@ -115,7 +115,7 @@ public final class OverlayRouteProvider extends android.support.v7.media.MediaRo
                 .build();
         setDescriptor(providerDescriptor);
     }
-    private final class OverlayRouteController extends android.support.v7.media.MediaRouteProvider.RouteController {
+    private final class OverlayRouteController extends androidx.mediarouter.media.MediaRouteProvider.RouteController {
         private final String mRouteId;
         private final SessionManager mSessionManager = new SessionManager("mrp");
         private final Player mPlayer;

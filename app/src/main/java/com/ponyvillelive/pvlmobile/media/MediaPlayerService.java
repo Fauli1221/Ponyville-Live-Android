@@ -17,8 +17,8 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
-import android.support.v7.app.NotificationCompat;
-import android.support.v7.media.MediaRouter;
+import androidx.core.app.NotificationCompat;
+import androidx.mediarouter.media.MediaRouter;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.SurfaceView;
@@ -195,9 +195,9 @@ public class MediaPlayerService extends Service {
         return new NotificationCompat.Action.Builder( icon, title, pendingIntent ).build();
     }
 
-    private void initNotification() {
+   /* private void initNotification() {
         Log.d(TAG, "init notifcation");
-        android.support.v4.app.NotificationCompat.Action action = generateAction(android.R.drawable.ic_media_play, "Play", ACTION_PLAY);
+        NotificationCompat.Action action = generateAction(android.R.drawable.ic_media_play, "Play", ACTION_PLAY);
 
         Intent intent = new Intent(getApplicationContext(), MediaPlayerService.class);
         intent.setAction( ACTION_STOP );
@@ -210,7 +210,7 @@ public class MediaPlayerService extends Service {
         style.setShowCancelButton(true);
         style.setCancelButtonIntent(pendingIntent);
 
-        android.support.v7.app.NotificationCompat.Builder builder = new android.support.v7.app.NotificationCompat.Builder(this);
+        androidx.appcompat.app.NotificationCompat.Builder builder = new androidx.appcompat.app.NotificationCompat.Builder(this);
         builder.setColor(Color.argb(255, 44, 127, 210)); // hard coded pvl blue... ?
         builder.setSmallIcon(R.drawable.pvl_logo);
         builder.setLargeIcon(defaultArtwork);
@@ -226,7 +226,7 @@ public class MediaPlayerService extends Service {
         builder.addAction(generateAction(android.R.drawable.ic_media_next, "Next", ACTION_NEXT));
         startService(new Intent(this, MediaPlayerService.class)); // needed as app now binds directly to service
         startForeground(ONGOING_NOTIFICATION_ID, builder.build());
-    }
+    }*/
 
     public void updateViews(SurfaceView view, FrameLayout layout){
         mPlayer.setVideoLayout(layout, view);
@@ -301,7 +301,7 @@ public class MediaPlayerService extends Service {
                  }
                  mMediaSession.setActive(true);
                  mSessionManager.resume();
-                 buildNotification(generateAction(android.R.drawable.ic_media_pause, "Pause", ACTION_PAUSE));
+               //  buildNotification(generateAction(android.R.drawable.ic_media_pause, "Pause", ACTION_PAUSE));
              }
 
              @Override
@@ -312,7 +312,7 @@ public class MediaPlayerService extends Service {
                      mNeedResume = true;
                  }
                  mSessionManager.pause();
-                 buildNotification(generateAction(android.R.drawable.ic_media_play, "Play", ACTION_PLAY));
+                // buildNotification(generateAction(android.R.drawable.ic_media_play, "Play", ACTION_PLAY));
              }
 
              @Override
@@ -321,7 +321,7 @@ public class MediaPlayerService extends Service {
 
                  Log.e("MediaPlayerService", "onSkipToNext");
                  mSessionManager.next();
-                 buildNotification(generateAction(android.R.drawable.ic_media_pause, "Pause", ACTION_PAUSE));
+               //  buildNotification(generateAction(android.R.drawable.ic_media_pause, "Pause", ACTION_PAUSE));
              }
 
              @Override
@@ -360,11 +360,11 @@ public class MediaPlayerService extends Service {
              }
          }
         );
-        initNotification();
+       // initNotification();
         sendBroadcast(new Intent(Constants.SERVICE_SETUP));
     }
 
-    private void buildNotification( NotificationCompat.Action action ) {
+   /* private void buildNotification( NotificationCompat.Action action ) {
         PlaylistItem current = mSessionManager.getCurrentItem();
         if (null == current){
             // clear notification?
@@ -381,7 +381,7 @@ public class MediaPlayerService extends Service {
         style.setShowCancelButton(true);
         style.setCancelButtonIntent(pendingIntent);
 
-        android.support.v7.app.NotificationCompat.Builder builder = new android.support.v7.app.NotificationCompat.Builder(this);
+        androidx.appcompat.app.NotificationCompat.Builder builder = new androidx.appcompat.app.NotificationCompat.Builder(this);
         builder.setColor(Color.argb(255, 44, 127, 210)); // hard coded pvl blue... ?
         builder.setSmallIcon(R.drawable.pvl_logo);
         //builder.setLargeIcon(artwork.copy(artwork.getConfig(), true));
@@ -398,7 +398,7 @@ public class MediaPlayerService extends Service {
         builder.addAction(generateAction(android.R.drawable.ic_media_next, "Next", ACTION_NEXT));
 
         startForeground(ONGOING_NOTIFICATION_ID, builder.build());
-    }
+    }*/
 
     public boolean handleMediaKey(KeyEvent event) {
         if (event != null && event.getAction() == KeyEvent.ACTION_DOWN

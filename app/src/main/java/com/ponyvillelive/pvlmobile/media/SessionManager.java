@@ -8,8 +8,8 @@ package com.ponyvillelive.pvlmobile.media;
 import android.app.PendingIntent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.support.v7.media.MediaItemStatus;
-import android.support.v7.media.MediaSessionStatus;
+import androidx.mediarouter.media.MediaItemStatus;
+import androidx.mediarouter.media.MediaSessionStatus;
 import android.util.Log;
 
 import com.ponyvillelive.pvlmobile.model.player.PlaylistItem;

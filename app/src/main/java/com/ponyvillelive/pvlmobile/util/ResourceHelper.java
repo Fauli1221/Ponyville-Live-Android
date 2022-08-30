@@ -5,8 +5,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.support.annotation.AttrRes;
-import android.support.annotation.ColorRes;
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorRes;
 
 /**
  * Created by berwyn on 19/03/15.

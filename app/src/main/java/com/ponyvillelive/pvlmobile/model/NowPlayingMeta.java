@@ -3,6 +3,8 @@ package com.ponyvillelive.pvlmobile.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.collection.ArrayMap;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -39,7 +41,7 @@ public class NowPlayingMeta implements Parcelable{
 
     private NowPlayingMeta(Parcel in) {
         this.station = in.readParcelable(null);
-        this.listeners = new android.support.v4.util.ArrayMap<String, Integer>();
+        this.listeners = new ArrayMap<String, Integer>();
         in.readMap(listeners, null);
         this.currentSong = in.readParcelable(null);
         this.songHistory = new ArrayList<SongWrapper>();

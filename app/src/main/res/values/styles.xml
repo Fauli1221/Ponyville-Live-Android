@@ -7,14 +7,14 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionBarStyle">@style/MyActionBar</item>
-        <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionBarOverlay">true</item>
         <!-- For the resting Spinner style -->
         <item name="android:spinnerItemStyle">
             @style/spinnerItemStyle
         </item>
 
         <!-- For each individual Spinner list item once clicked on -->
-        <item name="android:spinnerDropDownItemStyle">
+        <item name="spinnerDropDownItemStyle">
             @style/spinnerDropDownItemStyle
         </item>
     </style>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="100dp"
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="2dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_people_black_24dp"
+                app:srcCompat="@drawable/ic_people_black_24dp"
                 android:alpha="0.4"
                 />
 
