@@ -26,8 +26,8 @@ public final class PlaylistItem {
     private int mContentDuration;
     private long mTimestamp;
     private String mRemoteItemId;
-    private String mTitle;
-    private String mSubTitle;
+    private final String mTitle;
+    private final String mSubTitle;
     public PlaylistItem(String qid, String iid, Uri uri, Bitmap pic, String mime, PendingIntent pi, String title, String subtitle) {
         mSessionId = qid;
         mItemId = iid;
@@ -94,7 +94,7 @@ public final class PlaylistItem {
     }
     @Override
     public String toString() {
-        String state[] = {
+        String[] state = {
                 "PENDING",
                 "PLAYING",
                 "PAUSED",

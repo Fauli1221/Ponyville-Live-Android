@@ -34,14 +34,14 @@ import java.util.List;
 public class RemotePlayer extends Player {
     private static final String TAG = "RemotePlayer";
     private static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
-    private Context mContext;
+    private final Context mContext;
     private RouteInfo mRoute;
     private boolean mEnqueuePending;
     private String mTrackInfo = "";
     private Bitmap mSnapshot;
-    private List<PlaylistItem> mTempQueue = new ArrayList<PlaylistItem>();
+    private final List<PlaylistItem> mTempQueue = new ArrayList<PlaylistItem>();
     private RemotePlaybackClient mClient;
-    private StatusCallback mStatusCallback = new StatusCallback() {
+    private final StatusCallback mStatusCallback = new StatusCallback() {
         @Override
         public void onItemStatusChanged(Bundle data,
                                         String sessionId, MediaSessionStatus sessionStatus,

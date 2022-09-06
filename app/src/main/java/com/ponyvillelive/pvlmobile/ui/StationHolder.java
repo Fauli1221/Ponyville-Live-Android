@@ -16,9 +16,9 @@ public class StationHolder extends BaseHolder {
 
     public StationHolder(View itemView) {
         super(itemView);
-        listeners = (TextView) itemView.findViewById(R.id.station_watchers);
-        songTitle = (TextView) itemView.findViewById(R.id.station_title);
-        songArtist = (TextView) itemView.findViewById(R.id.station_artist);
+        listeners = itemView.findViewById(R.id.station_watchers);
+        songTitle = itemView.findViewById(R.id.station_title);
+        songArtist = itemView.findViewById(R.id.station_artist);
     }
 
 

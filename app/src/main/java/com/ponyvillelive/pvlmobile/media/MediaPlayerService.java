@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Binder;
 import android.os.Handler;
@@ -17,12 +16,14 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.mediarouter.media.MediaRouter;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.widget.FrameLayout;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.mediarouter.media.MediaRouter;
 
 import com.ponyvillelive.pvlmobile.R;
 import com.ponyvillelive.pvlmobile.model.player.PlaylistItem;
@@ -56,11 +57,11 @@ public class MediaPlayerService extends Service {
     }
 
     public MediaControllerCompat mController;
-    private IntentFilter noisyIntentFilter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
-    private NoisyAudioStreamReceiver mNoisyAudioStreamReceiver = new NoisyAudioStreamReceiver();
+    private final IntentFilter noisyIntentFilter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+    private final NoisyAudioStreamReceiver mNoisyAudioStreamReceiver = new NoisyAudioStreamReceiver();
 
 
-    private int loadIconState = 0;
+    private final int loadIconState = 0;
     private Handler loadHandler;
 
     private Bitmap artwork;
@@ -79,19 +80,19 @@ public class MediaPlayerService extends Service {
         // Return a custom callback that will simply log all of the route events
         // for demonstration purposes.
         @Override
-        public void onRouteAdded(MediaRouter router, MediaRouter.RouteInfo route) {
+        public void onRouteAdded(@NonNull MediaRouter router, @NonNull MediaRouter.RouteInfo route) {
             Log.d(TAG, "onRouteAdded: route=" + route);
         }
         @Override
-        public void onRouteChanged(MediaRouter router, MediaRouter.RouteInfo route) {
+        public void onRouteChanged(@NonNull MediaRouter router, @NonNull MediaRouter.RouteInfo route) {
             Log.d(TAG, "onRouteChanged: route=" + route);
         }
         @Override
-        public void onRouteRemoved(MediaRouter router, MediaRouter.RouteInfo route) {
+        public void onRouteRemoved(@NonNull MediaRouter router, @NonNull MediaRouter.RouteInfo route) {
             Log.d(TAG, "onRouteRemoved: route=" + route);
         }
         @Override
-        public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo route) {
+        public void onRouteSelected(@NonNull MediaRouter router, @NonNull MediaRouter.RouteInfo route) {
             Log.d(TAG, "onRouteSelected: route=" + route);
             mPlayer = Player.create(MediaPlayerService.this, route, mMediaSession);
             mPlayer.updatePresentation();
@@ -138,7 +139,7 @@ public class MediaPlayerService extends Service {
     };
     private PendingIntent mMediaPendingIntent;
 
-    private AudioManager.OnAudioFocusChangeListener mAudioFocusListener = new AudioManager.OnAudioFocusChangeListener() {
+    private final AudioManager.OnAudioFocusChangeListener mAudioFocusListener = new AudioManager.OnAudioFocusChangeListener() {
         @Override
         public void onAudioFocusChange(int focusChange) {
             Log.d(TAG, "audio focus changed: " + focusChange);
@@ -354,7 +355,7 @@ public class MediaPlayerService extends Service {
              public boolean onMediaButtonEvent(Intent mediaButtonEvent) {
                  if (mediaButtonEvent != null) {
                      return handleMediaKey(
-                             (KeyEvent) mediaButtonEvent.getParcelableExtra(Intent.EXTRA_KEY_EVENT));
+                             mediaButtonEvent.getParcelableExtra(Intent.EXTRA_KEY_EVENT));
                  }
                  return super.onMediaButtonEvent(mediaButtonEvent);
              }

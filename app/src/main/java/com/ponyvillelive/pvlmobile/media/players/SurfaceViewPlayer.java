@@ -201,7 +201,7 @@ public class SurfaceViewPlayer extends LocalPlayer implements
             // Inflate the layout.
             setContentView(R.layout.media_router_presentation);
             // Set up the surface view.
-            mPresentationSurfaceView = (SurfaceView)findViewById(R.id.surface_view);
+            mPresentationSurfaceView = findViewById(R.id.surface_view);
             SurfaceHolder holder = mPresentationSurfaceView.getHolder();
             holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
             holder.addCallback(SurfaceViewPlayer.this);

@@ -70,10 +70,10 @@ public class ShowListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_show_list, container, false);
         Log.d("SHOWS", "onCreateView");
 
-        errorLayout = (LinearLayout) view.findViewById(R.id.error_layout);
-        errorImage = (ImageView) view.findViewById(R.id.error_image);
+        errorLayout = view.findViewById(R.id.error_layout);
+        errorImage = view.findViewById(R.id.error_image);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_list);
+        mSwipeRefreshLayout = view.findViewById(R.id.refresh_list);
         mSwipeRefreshLayout.setRefreshing(true);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -86,7 +86,7 @@ public class ShowListFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.setExtraLayoutSpace(layoutManager.getScreenHeight());
 
-        listView = (RecyclerView) view.findViewById(android.R.id.list);
+        listView = view.findViewById(android.R.id.list);
 
         if (null == adapter)
             adapter = new ShowAdapter(getContext());

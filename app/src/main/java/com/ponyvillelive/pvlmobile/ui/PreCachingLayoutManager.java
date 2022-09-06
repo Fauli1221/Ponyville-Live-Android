@@ -3,9 +3,10 @@ package com.ponyvillelive.pvlmobile.ui;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.util.DisplayMetrics;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.DisplayMetrics;
 
 /**
  * Created by tinker on 30/01/16.
@@ -13,7 +14,7 @@ import android.util.DisplayMetrics;
 public class PreCachingLayoutManager extends LinearLayoutManager {
     private static final int DEFAULT_EXTRA_LAYOUT_SPACE = 600;
     private int extraLayoutSpace = -1;
-    private Context context;
+    private final Context context;
 
     public PreCachingLayoutManager(Context context) {
         super(context);

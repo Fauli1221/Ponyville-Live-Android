@@ -27,7 +27,7 @@ import java.util.List;
 public class SessionManager implements Player.Callback {
     private static final String TAG = "SessionManager";
     private static final boolean DEBUG = false;
-    private String mName;
+    private final String mName;
     private int mSessionId;
     private int mItemId;
     private boolean mPaused;

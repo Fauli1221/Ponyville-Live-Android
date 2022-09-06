@@ -1,10 +1,13 @@
 package com.ponyvillelive.pvlmobile.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ponyvillelive.pvlmobile.R;
 import com.ponyvillelive.pvlmobile.model.Convention;
@@ -40,6 +43,7 @@ public class ConventionAdapter extends RecyclerView.Adapter<BaseHolder> {
         return conList.get(position);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(BaseHolder holder, int position) {
         Convention con = conList.get(position);
@@ -52,6 +56,7 @@ public class ConventionAdapter extends RecyclerView.Adapter<BaseHolder> {
                 .into(holder.target);
     }
 
+    @NonNull
     @Override
     public BaseHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.

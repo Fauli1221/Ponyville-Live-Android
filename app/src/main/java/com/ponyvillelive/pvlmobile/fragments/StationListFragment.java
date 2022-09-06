@@ -4,17 +4,18 @@ import android.app.Activity;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Parcelable;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.ponyvillelive.pvlmobile.R;
 import com.ponyvillelive.pvlmobile.model.NowPlayingMeta;
@@ -85,11 +86,11 @@ public class StationListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_station, container, false);
 
-        errorLayout = (LinearLayout) view.findViewById(R.id.error_layout);
-        errorImage = (ImageView) view.findViewById(R.id.error_image);
+        errorLayout = view.findViewById(R.id.error_layout);
+        errorImage = view.findViewById(R.id.error_image);
 
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.station_list_layout);
+        mSwipeRefreshLayout = view.findViewById(R.id.station_list_layout);
         mSwipeRefreshLayout.setRefreshing(true);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -102,7 +103,7 @@ public class StationListFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.setExtraLayoutSpace(layoutManager.getScreenHeight());
 
-        listView = (RecyclerView) view.findViewById(android.R.id.list);
+        listView = view.findViewById(android.R.id.list);
 
         if (null == adapter)
             adapter = new NowPlayingAdapter(getContext());

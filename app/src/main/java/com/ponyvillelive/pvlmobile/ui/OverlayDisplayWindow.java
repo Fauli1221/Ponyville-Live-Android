@@ -228,7 +228,7 @@ public abstract class OverlayDisplayWindow {
             mWindowContent = inflater.inflate(
                     R.layout.overlay_display_window, null);
             mWindowContent.setOnTouchListener(mOnTouchListener);
-            mTextureView = (TextureView) mWindowContent.findViewById(
+            mTextureView = mWindowContent.findViewById(
                     R.id.overlay_display_window_texture);
             mTextureView.setPivotX(0);
             mTextureView.setPivotY(0);
@@ -236,7 +236,7 @@ public abstract class OverlayDisplayWindow {
             mTextureView.getLayoutParams().height = mHeight;
             mTextureView.setOpaque(false);
             mTextureView.setSurfaceTextureListener(mSurfaceTextureListener);
-            mNameTextView = (TextView) mWindowContent.findViewById(
+            mNameTextView = mWindowContent.findViewById(
                     R.id.overlay_display_window_title);
             mNameTextView.setText(mName);
             mWindowParams = new WindowManager.LayoutParams(

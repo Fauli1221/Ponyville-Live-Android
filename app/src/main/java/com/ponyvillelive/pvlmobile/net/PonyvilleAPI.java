@@ -88,9 +88,9 @@ public interface PonyvilleAPI {
         public static PonyvilleAPI build(Application app) {
             if (ponyvilleApi != null) return ponyvilleApi;
 
-            if(hostUrl == null) hostUrl = "http://ponyvillelive.com/api/";
+            if(hostUrl == null) hostUrl = "https://ponyvillelive.com/api/";
             if(client == null) {
-                File cacheDir = new File(app.getCacheDir(), "http");
+                File cacheDir = new File(app.getCacheDir(), "https");
                 Cache cache = new Cache(cacheDir, CACHE_SIZE);
                 client = new OkHttpClient.Builder()
                         .cache(cache)

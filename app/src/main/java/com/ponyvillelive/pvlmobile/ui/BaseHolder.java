@@ -3,12 +3,13 @@ package com.ponyvillelive.pvlmobile.ui;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import androidx.palette.graphics.Palette;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.palette.graphics.Palette;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ponyvillelive.pvlmobile.R;
 import com.squareup.picasso.Picasso;
@@ -51,9 +52,9 @@ public class BaseHolder extends RecyclerView.ViewHolder {
     public BaseHolder(View itemView) {
         super(itemView);
         baseView = (CardView) itemView;
-        title = (TextView) itemView.findViewById(R.id.title);
-        subtitle = (TextView) itemView.findViewById(R.id.subtitle);
-        icon = (ImageView) itemView.findViewById(R.id.icon);
+        title = itemView.findViewById(R.id.title);
+        subtitle = itemView.findViewById(R.id.subtitle);
+        icon = itemView.findViewById(R.id.icon);
     }
 
     public void colourise(Bitmap bitmap) {

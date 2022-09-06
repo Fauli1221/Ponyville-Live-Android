@@ -128,11 +128,7 @@ public abstract class Player {
         PlaybackStateCompat pbState = bob.build();
         Log.d(TAG, "Setting state to " + pbState);
         mMediaSession.setPlaybackState(pbState);
-        if (state != STATE_IDLE) {
-            mMediaSession.setActive(true);
-        } else {
-            mMediaSession.setActive(false);
-        }
+        mMediaSession.setActive(state != STATE_IDLE);
     }
     private void setMediaSession(MediaSessionCompat session) {
         mMediaSession = session;

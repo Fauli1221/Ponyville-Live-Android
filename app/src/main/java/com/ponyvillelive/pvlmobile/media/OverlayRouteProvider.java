@@ -267,7 +267,7 @@ public final class OverlayRouteProvider extends androidx.mediarouter.media.Media
                             item.getStatus().asBundle());
                     callback.onResult(result);
                 } else {
-                    callback.onError("Failed to open " + uri.toString(), null);
+                    callback.onError("Failed to open " + uri, null);
                 }
             }
             return true;

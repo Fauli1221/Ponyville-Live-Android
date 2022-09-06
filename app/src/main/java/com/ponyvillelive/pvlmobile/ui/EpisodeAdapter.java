@@ -2,10 +2,12 @@ package com.ponyvillelive.pvlmobile.ui;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ponyvillelive.pvlmobile.R;
 import com.ponyvillelive.pvlmobile.model.Episode;
@@ -50,8 +52,8 @@ public class EpisodeAdapter extends RecyclerView.Adapter<BaseHolder> {
         holder.title.setText(episode.title);
         holder.subtitle.setText(episode.summary);
 
-        if (null != episode.thumbnailUrl && (episode.thumbnailUrl.toString()).trim().length() > 1){
-            Picasso.with(mContext).load(episode.thumbnailUrl.toString())
+        if (null != episode.thumbnailUrl && (episode.thumbnailUrl).trim().length() > 1){
+            Picasso.with(mContext).load(episode.thumbnailUrl)
                     .placeholder(R.drawable.pvl_logo)
                     .into(holder.target);
         }
@@ -63,6 +65,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<BaseHolder> {
 
     }
 
+    @NonNull
     @Override
     public BaseHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.

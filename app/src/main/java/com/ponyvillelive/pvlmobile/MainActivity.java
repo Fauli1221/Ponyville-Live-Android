@@ -16,22 +16,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
-import com.google.android.material.navigation.NavigationView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.core.view.GravityCompat;
-import androidx.core.view.MenuItemCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.mediarouter.app.MediaRouteActionProvider;
-import androidx.mediarouter.app.MediaRouteDiscoveryFragment;
-import androidx.mediarouter.media.MediaControlIntent;
-import androidx.mediarouter.media.MediaItemStatus;
-import androidx.mediarouter.media.MediaRouteSelector;
-import androidx.mediarouter.media.MediaRouter;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,6 +34,23 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.mediarouter.app.MediaRouteActionProvider;
+import androidx.mediarouter.app.MediaRouteDiscoveryFragment;
+import androidx.mediarouter.media.MediaControlIntent;
+import androidx.mediarouter.media.MediaItemStatus;
+import androidx.mediarouter.media.MediaRouteSelector;
+import androidx.mediarouter.media.MediaRouter;
+
+import com.google.android.material.navigation.NavigationView;
 import com.nhaarman.listviewanimations.ArrayAdapter;
 import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
 import com.nhaarman.listviewanimations.itemmanipulation.dragdrop.OnItemMovedListener;
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity
     protected MediaPlayerService mService;
     ImageButton glanceSize;
     boolean glanceSizeUp = true;
-    private String TAG = "PVL";
+    private final String TAG = "PVL";
     private SlidingUpPanelLayout mLayout;
     private PlaylistAdapter mPlayListItems;
     private ImageButton mPauseResumeButton;
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity
     private MediaRouteSelector mSelector;
     private ServiceReceiver mServiceReceiver;
     private boolean mBound = false;
-    private ServiceConnection mConnection = new ServiceConnection() {
+    private final ServiceConnection mConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName className,
@@ -126,8 +127,8 @@ public class MainActivity extends AppCompatActivity
             if (mService.mPlayer != null) {
                 Log.d(TAG, "setting video views...");
                 // setup local video view for the service player
-                videoLayout = (FrameLayout) findViewById(R.id.player);
-                videoView = (SurfaceView) findViewById(R.id.surface_view);
+                videoLayout = findViewById(R.id.player);
+                videoView = findViewById(R.id.surface_view);
                 //mService.updateViews(videoView, videoLayout);
             }
 
@@ -143,7 +144,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
@@ -181,13 +182,13 @@ public class MainActivity extends AppCompatActivity
             }, 1000);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -195,23 +196,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupSlidingLayout() {
-        mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        mLayout = findViewById(R.id.sliding_layout);
         mLayout.setPanelState(PanelState.HIDDEN);
-        LinearLayout glanceView = (LinearLayout) findViewById(R.id.dragView);
+        LinearLayout glanceView = findViewById(R.id.dragView);
         mLayout.setDragView(glanceView);
         mLayout.setAnchorPoint(0.6f);
 
-        glanceSize = (ImageButton) findViewById(R.id.glance_size);
-        glanceSize.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mLayout.getPanelState() == PanelState.COLLAPSED) {
-                    mLayout.setPanelState(PanelState.ANCHORED);
-                } else if (mLayout.getPanelState() == PanelState.ANCHORED) {
-                    mLayout.setPanelState(PanelState.EXPANDED);
-                } else {
-                    mLayout.setPanelState(PanelState.COLLAPSED);
-                }
+        glanceSize = findViewById(R.id.glance_size);
+        glanceSize.setOnClickListener(v -> {
+            if (mLayout.getPanelState() == PanelState.COLLAPSED) {
+                mLayout.setPanelState(PanelState.ANCHORED);
+            } else if (mLayout.getPanelState() == PanelState.ANCHORED) {
+                mLayout.setPanelState(PanelState.EXPANDED);
+            } else {
+                mLayout.setPanelState(PanelState.COLLAPSED);
             }
         });
 
@@ -268,7 +266,7 @@ public class MainActivity extends AppCompatActivity
                 //Log.i(TAG, "onPanelHidden");
             }
         });
-        TextView glanceText = (TextView) findViewById(R.id.glance_text);
+        TextView glanceText = findViewById(R.id.glance_text);
         //glanceText.setSelected(true);
 
 
@@ -385,7 +383,7 @@ public class MainActivity extends AppCompatActivity
         mPlayListItems = new PlaylistAdapter();
         SwipeDismissAdapter swipeDismissAdapter = new SwipeDismissAdapter(mPlayListItems, new PlaylistOnDismissCallback(mPlayListItems));
 
-        playListView = (DynamicListView) findViewById(R.id.playlist);
+        playListView = findViewById(R.id.playlist);
         playListView.setAdapter(swipeDismissAdapter);
 
         playListView.enableDragAndDrop();
@@ -396,8 +394,8 @@ public class MainActivity extends AppCompatActivity
 
 
         // setup local video view for the service player
-        videoLayout = (FrameLayout) findViewById(R.id.player);
-        videoView = (SurfaceView) findViewById(R.id.surface_view);
+        videoLayout = findViewById(R.id.player);
+        videoView = findViewById(R.id.surface_view);
 
         mService.updateViews(videoView, videoLayout);
 
@@ -423,7 +421,7 @@ public class MainActivity extends AppCompatActivity
         //testSetupSongs();
 
         // Initialize the layout.
-        mPauseResumeButton = (ImageButton) findViewById(R.id.pause_resume_button);
+        mPauseResumeButton = findViewById(R.id.pause_resume_button);
         mPauseResumeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -436,7 +434,7 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-        mPrevButton = (ImageButton) findViewById(R.id.prev_button);
+        mPrevButton = findViewById(R.id.prev_button);
         mPrevButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -444,14 +442,14 @@ public class MainActivity extends AppCompatActivity
                 mService.mController.getTransportControls().skipToPrevious();
             }
         });
-        mNextButton = (ImageButton) findViewById(R.id.next_button);
+        mNextButton = findViewById(R.id.next_button);
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mService.mController.getTransportControls().skipToNext();
             }
         });
-        mStopButton = (ImageButton) findViewById(R.id.stop_button);
+        mStopButton = findViewById(R.id.stop_button);
         mStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -459,7 +457,7 @@ public class MainActivity extends AppCompatActivity
                 mService.mController.getTransportControls().stop();
             }
         });
-        mSeekBar = (SeekBar) findViewById(R.id.seekbar);
+        mSeekBar = findViewById(R.id.seekbar);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -681,7 +679,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (mLayout != null &&
@@ -733,7 +731,7 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -777,7 +775,7 @@ public class MainActivity extends AppCompatActivity
     public void hideSplash(boolean animate) {
         if (splashDismissed) return;
         int mShortAnimationDuration = 500;
-        final ImageView splashView = (ImageView) this.findViewById(R.id.imgSplash);
+        final ImageView splashView = this.findViewById(R.id.imgSplash);
         splashView.setClickable(false);
         if (animate) {
             AnimatorSet set = new AnimatorSet();
@@ -858,15 +856,15 @@ public class MainActivity extends AppCompatActivity
             }
             final PlaylistItem item = getItem(position);
 
-            TextView textView = (TextView) v.findViewById(R.id.title);
-            TextView subtextView = (TextView) v.findViewById(R.id.subtitle);
+            TextView textView = v.findViewById(R.id.title);
+            TextView subtextView = v.findViewById(R.id.subtitle);
             textView.setText(item.getTitle());
             subtextView.setText(item.getSubtitle());
 
-            ImageView iconView = (ImageView) v.findViewById(R.id.icon);
+            ImageView iconView = v.findViewById(R.id.icon);
             iconView.setImageBitmap(item.getThumb());
 
-            ImageButton remBtn = (ImageButton) v.findViewById(R.id.playlist_remove);
+            ImageButton remBtn = v.findViewById(R.id.playlist_remove);
             remBtn.setTag(item);
             remBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

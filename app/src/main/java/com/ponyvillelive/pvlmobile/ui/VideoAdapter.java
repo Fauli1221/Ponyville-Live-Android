@@ -1,10 +1,11 @@
 package com.ponyvillelive.pvlmobile.ui;
 
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ponyvillelive.pvlmobile.R;
 import com.ponyvillelive.pvlmobile.model.Convention;
@@ -49,8 +50,8 @@ public class VideoAdapter extends RecyclerView.Adapter<BaseHolder> {
         holder.title.setText(video.name);
         holder.subtitle.setText(video.description);
 
-        if (null != video.thumbnailUrl && (video.thumbnailUrl.toString()).trim().length() > 1){
-            Picasso.with(mContext).load(video.thumbnailUrl.toString())
+        if (null != video.thumbnailUrl && (video.thumbnailUrl).trim().length() > 1){
+            Picasso.with(mContext).load(video.thumbnailUrl)
                     .placeholder(R.drawable.pvl_logo)
                     .into(holder.target);
         }
