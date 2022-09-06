@@ -1,5 +1,6 @@
 package com.ponyvillelive.pvlmobile.media;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -9,20 +10,20 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.AudioManager;
+import android.media.session.MediaController;
+import android.media.session.MediaSession;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.support.v4.media.session.MediaControllerCompat;
-import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 import androidx.mediarouter.media.MediaRouter;
 
 import com.ponyvillelive.pvlmobile.R;
@@ -56,7 +57,7 @@ public class MediaPlayerService extends Service {
         return mBinder;
     }
 
-    public MediaControllerCompat mController;
+    public MediaController mController;
     private final IntentFilter noisyIntentFilter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
     private final NoisyAudioStreamReceiver mNoisyAudioStreamReceiver = new NoisyAudioStreamReceiver();
 
@@ -74,7 +75,7 @@ public class MediaPlayerService extends Service {
     public final SessionManager mSessionManager = new SessionManager("pvl");
     public Player mPlayer;
 
-    public MediaSessionCompat mMediaSession;
+    public MediaSession mMediaSession;
 
     public final MediaRouter.Callback mMediaRouterCB = new MediaRouter.Callback() {
         // Return a custom callback that will simply log all of the route events
@@ -171,34 +172,34 @@ public class MediaPlayerService extends Service {
 
         if( action.equalsIgnoreCase( ACTION_PLAY ) ) {
             mController.getTransportControls().play();
-            //mSessionManager.resume();
+            mSessionManager.resume();
         } else if( action.equalsIgnoreCase( ACTION_PAUSE ) ) {
             mController.getTransportControls().pause();
-            //mSessionManager.pause();
+            mSessionManager.pause();
         } else if( action.equalsIgnoreCase( ACTION_PREVIOUS ) ) {
             mController.getTransportControls().skipToPrevious();
-            //mController.getTransportControls().skipToPrevious();
+            mController.getTransportControls().skipToPrevious();
         } else if( action.equalsIgnoreCase( ACTION_NEXT ) ) {
             mController.getTransportControls().skipToNext();
-            //mSessionManager.next();
+            mSessionManager.next();
         } else if( action.equalsIgnoreCase( ACTION_STOP ) ) {
             mController.getTransportControls().stop();
-            //mSessionManager.stop();
+            mSessionManager.stop();
         } else initMediaSession();
     }
 
 
 
-    private NotificationCompat.Action generateAction( int icon, String title, String intentAction ) {
+    private Notification.Action generateAction( int icon, String title, String intentAction ) {
         Intent intent = new Intent( getApplicationContext(), MediaPlayerService.class );
         intent.setAction(intentAction);
         PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(), 1, intent, 0);
-        return new NotificationCompat.Action.Builder( icon, title, pendingIntent ).build();
+        return new Notification.Action.Builder( icon, title, pendingIntent ).build();
     }
 
-   /* private void initNotification() {
+    private void initNotification() {
         Log.d(TAG, "init notifcation");
-        NotificationCompat.Action action = generateAction(android.R.drawable.ic_media_play, "Play", ACTION_PLAY);
+        Notification.Action action = generateAction(android.R.drawable.ic_media_play, "Play", ACTION_PLAY);
 
         Intent intent = new Intent(getApplicationContext(), MediaPlayerService.class);
         intent.setAction( ACTION_STOP );
@@ -206,12 +207,12 @@ public class MediaPlayerService extends Service {
 
         Bitmap defaultArtwork = BitmapFactory.decodeResource(getResources(), R.drawable.pvl_logo);
 
-        NotificationCompat.MediaStyle style = new NotificationCompat.MediaStyle().setMediaSession(mMediaSession.getSessionToken());
+        Notification.MediaStyle style = new Notification.MediaStyle().setMediaSession(mMediaSession.getSessionToken());
         style.setShowActionsInCompactView(0, 1, 2);
-        style.setShowCancelButton(true);
-        style.setCancelButtonIntent(pendingIntent);
+//        style.setShowCancelButton(true);
+//        style.setCancelButtonIntent(pendingIntent);
 
-        androidx.appcompat.app.NotificationCompat.Builder builder = new androidx.appcompat.app.NotificationCompat.Builder(this);
+        Notification.Builder builder = new Notification.Builder(this);
         builder.setColor(Color.argb(255, 44, 127, 210)); // hard coded pvl blue... ?
         builder.setSmallIcon(R.drawable.pvl_logo);
         builder.setLargeIcon(defaultArtwork);
@@ -227,7 +228,7 @@ public class MediaPlayerService extends Service {
         builder.addAction(generateAction(android.R.drawable.ic_media_next, "Next", ACTION_NEXT));
         startService(new Intent(this, MediaPlayerService.class)); // needed as app now binds directly to service
         startForeground(ONGOING_NOTIFICATION_ID, builder.build());
-    }*/
+    }
 
     public void updateViews(SurfaceView view, FrameLayout layout){
         mPlayer.setVideoLayout(layout, view);
@@ -261,14 +262,14 @@ public class MediaPlayerService extends Service {
         mMediaPendingIntent = PendingIntent.getBroadcast(this, 0, mediaButtonIntent, 0);
 
         // Create the MediaSession
-        mMediaSession = new MediaSessionCompat(this, TAG, null,
-                mMediaPendingIntent);
-        mMediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS
-                | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
+        mMediaSession = new MediaSession(this, TAG, null);
+        mMediaSession.setFlags(MediaSession.FLAG_HANDLES_MEDIA_BUTTONS
+                | MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS);
+
 
         // Create and register the remote control client
         mMediaRouter = MediaRouter.getInstance(this);
-        mMediaRouter.setMediaSessionCompat(mMediaSession);
+        mMediaRouter.setMediaSession(mMediaSession);
 
         // Set up playback manager and player
         mPlayer = Player.create(MediaPlayerService.this,
@@ -279,7 +280,7 @@ public class MediaPlayerService extends Service {
         mMediaRouter = MediaRouter.getInstance(this);
 
         try{
-            mController = new MediaControllerCompat(this, mMediaSession.getSessionToken());
+            mController = new MediaController(this, mMediaSession.getSessionToken());
         }
         catch (Exception e){
             Log.e("PVL", "failed to attach to remote media session token: " + e);
@@ -287,7 +288,7 @@ public class MediaPlayerService extends Service {
         }
 
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        mMediaSession.setCallback(new MediaSessionCompat.Callback() {
+        mMediaSession.setCallback(new MediaSession.Callback() {
              @Override
              public void onPlay() {
                  super.onPlay();

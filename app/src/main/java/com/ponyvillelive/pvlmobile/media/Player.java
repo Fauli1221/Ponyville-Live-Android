@@ -7,16 +7,17 @@ package com.ponyvillelive.pvlmobile.media;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.v4.media.MediaMetadataCompat;
-import android.support.v4.media.session.MediaSessionCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
-import androidx.mediarouter.media.MediaControlIntent;
-import androidx.mediarouter.media.MediaRouter.RouteInfo;
+import android.media.MediaMetadata;
+import android.media.session.MediaSession;
+import android.media.session.PlaybackState;
 import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.FrameLayout;
+
+import androidx.mediarouter.media.MediaControlIntent;
+import androidx.mediarouter.media.MediaRouter.RouteInfo;
 
 import com.ponyvillelive.pvlmobile.media.players.OverlayPlayer;
 import com.ponyvillelive.pvlmobile.media.players.RemotePlayer;
@@ -37,12 +38,12 @@ public abstract class Player {
     protected static final int STATE_READY = 3;
     protected static final int STATE_PLAYING = 4;
     protected static final int STATE_PAUSED = 5;
-    private static final long PLAYBACK_ACTIONS = PlaybackStateCompat.ACTION_PAUSE
-            | PlaybackStateCompat.ACTION_PLAY;
-    private static final PlaybackStateCompat INIT_PLAYBACK_STATE = new PlaybackStateCompat.Builder()
-            .setState(PlaybackStateCompat.STATE_NONE, 0, .0f).build();
+    private static final long PLAYBACK_ACTIONS = PlaybackState.ACTION_PAUSE
+            | PlaybackState.ACTION_PLAY;
+    private static final PlaybackState INIT_PLAYBACK_STATE = new PlaybackState.Builder()
+            .setState(PlaybackState.STATE_NONE, 0, .0f).build();
     protected Callback mCallback;
-    protected MediaSessionCompat mMediaSession;
+    protected MediaSession mMediaSession;
     protected PlaylistItem nowPlaying;
     public abstract boolean isRemotePlayback();
     public abstract boolean isQueuingSupported();
@@ -71,7 +72,7 @@ public abstract class Player {
     public void setCallback(Callback callback) {
         mCallback = callback;
     }
-    public static Player create(Context context, RouteInfo route, MediaSessionCompat session) {
+    public static Player create(Context context, RouteInfo route, MediaSession session) {
         Player player;
         if (route != null && route.supportsControlCategory(
                 MediaControlIntent.CATEGORY_REMOTE_PLAYBACK)) {
@@ -97,12 +98,12 @@ public abstract class Player {
         if (mMediaSession == null) {
             return;
         }
-        MediaMetadataCompat.Builder bob = new MediaMetadataCompat.Builder();
+        MediaMetadata.Builder bob = new MediaMetadata.Builder();
         if (nowPlaying != null){
-            bob.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, nowPlaying.getTitle());
-            bob.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, nowPlaying.getSubtitle());
-            bob.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION, nowPlaying.getUri().toString());
-            bob.putBitmap(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON, getSnapshot());
+            bob.putString(MediaMetadata.METADATA_KEY_DISPLAY_TITLE, nowPlaying.getTitle());
+            bob.putString(MediaMetadata.METADATA_KEY_DISPLAY_SUBTITLE, nowPlaying.getSubtitle());
+            bob.putString(MediaMetadata.METADATA_KEY_DISPLAY_DESCRIPTION, nowPlaying.getUri().toString());
+            bob.putBitmap(MediaMetadata.METADATA_KEY_DISPLAY_ICON, getSnapshot());
         }
 
         mMediaSession.setMetadata(bob.build());
@@ -111,26 +112,26 @@ public abstract class Player {
         if (mMediaSession == null) {
             return;
         }
-        PlaybackStateCompat.Builder bob = new PlaybackStateCompat.Builder();
+        PlaybackState.Builder bob = new PlaybackState.Builder();
         bob.setActions(PLAYBACK_ACTIONS);
         switch (state) {
             case STATE_PLAYING:
-                bob.setState(PlaybackStateCompat.STATE_PLAYING, -1, 1);
+                bob.setState(PlaybackState.STATE_PLAYING, -1, 1);
                 break;
             case STATE_READY:
             case STATE_PAUSED:
-                bob.setState(PlaybackStateCompat.STATE_PAUSED, -1, 0);
+                bob.setState(PlaybackState.STATE_PAUSED, -1, 0);
                 break;
             case STATE_IDLE:
-                bob.setState(PlaybackStateCompat.STATE_STOPPED, -1, 0);
+                bob.setState(PlaybackState.STATE_STOPPED, -1, 0);
                 break;
         }
-        PlaybackStateCompat pbState = bob.build();
+        PlaybackState pbState = bob.build();
         Log.d(TAG, "Setting state to " + pbState);
         mMediaSession.setPlaybackState(pbState);
         mMediaSession.setActive(state != STATE_IDLE);
     }
-    private void setMediaSession(MediaSessionCompat session) {
+    private void setMediaSession(MediaSession session) {
         mMediaSession = session;
     }
     public interface Callback {
